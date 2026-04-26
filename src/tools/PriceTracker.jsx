@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Icon, Icons } from "../components/Icons";
 
 export default function PriceTracker() {

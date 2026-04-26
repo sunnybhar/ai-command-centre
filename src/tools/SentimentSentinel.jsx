@@ -45,7 +45,7 @@ export default function SentimentSentinel({ apiKey }) {
       const p = MOCK_POSTS[i];
       setStep(`Analyzing post ${i + 1}/${MOCK_POSTS.length}...`);
       try {
-        const res = await fetch("/v1/messages", {
+        const res = await fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export default function SentimentSentinel({ apiKey }) {
 
     setStep("Generating executive digest...");
     const summary = analyzed.map((p) => ({ title: p.title, sentiment: p.ai?.sentiment, themes: p.ai?.themes }));
-    const dRes = await fetch("/v1/messages", {
+    const dRes = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

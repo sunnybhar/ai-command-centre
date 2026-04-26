@@ -62,7 +62,7 @@ export default function ABTesting({ apiKey }) {
       const statsText = `Group A (${keys[0]}) CR: ${crA}%\nGroup B (${keys[1]}) CR: ${crB}%\nP-Value: ${p}\nLift: ${lift}%\nResult: ${sig ? "WINNER" : "INCONCLUSIVE"}`;
       const prompt = `You are a Senior PM presenting A/B test results to a VP.\n\nStats:\n${statsText}\n\nWrite a concise Slack message (max 120 words) that:\n1. Announces the winner in plain English\n2. Explains p-value using a simple analogy (no jargon)\n3. Gives a clear GO / NO-GO recommendation\n4. Uses 1-2 emojis\n\nDo NOT use "statistically significant", "null hypothesis", or "chi-squared".`;
 
-      const res = await fetch("/v1/messages", {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

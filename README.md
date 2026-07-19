@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# Sunny Bhargava · AI Product Managers Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Live:** [ai-command-centre-ebon.vercel.app](https://ai-command-centre-ebon.vercel.app)
 
-## Available Scripts
+An AI-powered product management workspace that consolidates the core workflows of a modern product manager into a single platform. Each tool addresses a real, recurring PM task: the kind of work that normally consumes hours of skilled time or gets skipped entirely under deadline pressure.
 
-In the project directory, you can run:
+Built and maintained by Sunny Bhargava, MBA Candidate at the Gabelli School of Business, Fordham University, with roughly ten years of experience across product, operations, and field engineering.
 
-### `npm start`
+## What This Is
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Product managers run the same high-value workflows repeatedly: writing requirements documents, diagnosing metric movements, analyzing experiments, researching customers, monitoring brand health, and engaging leads. Most of these are done manually, inconsistently, and in isolation. This dashboard encodes each workflow into a structured AI tool with a disciplined methodology behind it, so the output is not just fast but correct in form.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The platform runs on a React frontend with a FastAPI backend. Visitors get three free runs per day on a hosted key. Beyond that, users bring their own Anthropic API key, entered client-side and never stored.
 
-### `npm test`
+## The Tools
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Tool | What It Does |
+|---|---|
+| PRD Generator | Produces structured requirements documents across five contexts: Lean MVP, AI/ML Feature, B2B SaaS Growth, Enterprise Compliance, and Cross-Functional Launch. Full and scannable formats, PDF and DOCX export |
+| Metrics Diagnosis | Structured root-cause analysis for metric movements, following a disciplined diagnostic tree with ranked hypotheses and validation plans. Includes a timed interview practice mode |
+| Eval Harness | Runs test suites against the other tools, scores outputs with deterministic checks and LLM-as-judge, and tracks prompt version performance over time |
+| A/B Testing | Chi-squared significance analysis on uploaded experiment data with an executive-ready summary |
+| Synthetic Persona Lab | Simulated market research using silicon samples, built on the November 2025 HBR research on synthetic personas, with validity limitations displayed alongside results |
+| Model Scorecard | Runs the same PM task across frontier models via OpenRouter, capturing quality, latency, and cost, and exporting a recommendation memo |
+| Competitive Teardown | Structured competitive analysis from a product URL: positioning, segment, pricing, strengths, gaps, and predicted roadmap |
+| Sentiment Sentinel | Brand sentiment monitoring with crisis flagging and an executive digest |
+| Scout Agent | Behavioral lead scoring with personalized outreach generation |
+| Price Tracker | Product price and availability tracking with CSV export |
+| Leads Engine | AIDA-framework cold email generation from lead lists |
 
-### `npm run build`
+## Architecture
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+React (Vercel)  →  FastAPI (Render)  →  Anthropic Claude API
+                          ↓                    OpenRouter (multi-model)
+                   SQLite / Postgres
+                   (analytics, rate limiting, eval storage)
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Frontend:** React, single-page dashboard, deployed on Vercel with auto-deploy from GitHub
+- **Backend:** FastAPI on Render. Hybrid key middleware, anonymous usage analytics, eval storage, multi-model routing
+- **AI:** Anthropic Claude (Sonnet class) for all primary inference, OpenRouter for cross-model comparison
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Design Principles
 
-### `npm run eject`
+1. **Depth over count.** Hero tools carry evaluation suites and written case studies. Demonstration tools are labeled honestly as demos.
+2. **Evaluation as a first-class feature.** The Eval Harness treats prompts as versioned, regression-tested artifacts, and publishes its judge agreement rates rather than hiding them.
+3. **Responsible AI framing.** Tools built on emerging research, like the Synthetic Persona Lab, display known limitations directly in the interface.
+4. **Real usability.** Free runs mean a first-time visitor can generate a full PRD in under a minute with zero setup.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Contact
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Sunny Bhargava · [LinkedIn](https://www.linkedin.com/in/sunnybhargava) · MBA Class of 2027, Gabelli School of Business, Fordham University

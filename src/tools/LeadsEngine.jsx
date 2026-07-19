@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Icon, Icons } from "../components/Icons";
 
-function parseLeads(text) {
+function parseLeads(text, statusFilter) {
   const rows = text.trim().split("\n").map((r) => {
     const cols = []; let cur = "", inQ = false;
     for (const c of r) {
@@ -16,7 +16,7 @@ function parseLeads(text) {
   return rows
     .slice(1)
     .map((r) => { const o = {}; h.forEach((k, i) => (o[k] = (r[i] || "").trim())); return o; })
-    .filter((r) => r["Pipeline Status"] === "1-Ready for AI")
+    .filter((r) => statusFilter === "All" || r["Pipeline Status"] === statusFilter)
     .slice(0, 5);
 }
 
@@ -26,12 +26,13 @@ export default function LeadsEngine({ apiKey }) {
   const [loading, setLoading] = useState(false);
   const [step, setStep]       = useState("");
   const [selected, setSelected] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("1-Ready for AI");
   const fileRef = useRef();
 
   async function run() {
     if (!csv) return;
     setLoading(true); setLeads([]); setSelected(null);
-    const rawLeads = parseLeads(csv);
+    const rawLeads = parseLeads(csv, statusFilter);
     const out = [];
 
     for (let i = 0; i < rawLeads.length; i++) {
@@ -91,7 +92,16 @@ Sentence 4: Soft CTA — low friction ask.`;
         <div className="card-title">Upload Leads CSV (growthsync_leads.csv)</div>
         <div className="alert alert-warn">
           <Icon d={Icons.warning} size={14} />
-          Expects: First Name, Brand Name, Active Storefronts, Trigger Event, Assumed Pain Point, Pipeline Status. Processes leads with status "1-Ready for AI" (max 5).
+          Expects: First Name, Brand Name, Active Storefronts, Trigger Event, Assumed Pain Point, Pipeline Status. Processes up to 5 leads matching the selected status.
+        </div>
+        <div className="field" style={{ maxWidth: 280 }}>
+          <label>Process leads with status</label>
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}
+            style={{ width: "100%", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 7, padding: "10px 10px", color: "var(--text)", fontSize: 12, outline: "none" }}>
+            <option value="1-Ready for AI">1-Ready for AI</option>
+            <option value="2-Drafted">2-Drafted (redraft)</option>
+            <option value="All">All leads</option>
+          </select>
         </div>
         <input ref={fileRef} type="file" accept=".csv" style={{ display: "none" }}
           onChange={(e) => {

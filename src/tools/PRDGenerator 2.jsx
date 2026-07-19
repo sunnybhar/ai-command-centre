@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Icon, Icons } from "../components/Icons";
-import { callAI, getFreeRuns } from "../lib/api";
 
 // ── Variation Config ──────────────────────────────────────────────────────────
 const VARIATIONS = [
@@ -418,30 +417,32 @@ export default function PRDGenerator({ apiKey }) {
   const [tab,        setTab]        = useState("rendered");
   const [err,        setErr]        = useState("");
   const [copied,     setCopied]     = useState(false);
-  const [freeRuns,   setFreeRuns]   = useState(null);
-
-  useEffect(() => {
-    getFreeRuns().then((d) => { if (d) setFreeRuns(d.remaining); });
-  }, []);
 
   const varCfg = VARIATIONS.find((v) => v.id === variation);
 
   async function callAPI(system, user) {
-    const result = await callAI({
-      tool: "prd_generator",
-      system,
-      messages: [{ role: "user", content: user }],
-      maxTokens: 4000,
-      apiKey,
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true",
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 4000,
+        system,
+        messages: [{ role: "user", content: user }],
+      }),
     });
-    if (result.freeRunsRemaining !== null && result.freeRunsRemaining !== undefined) {
-      setFreeRuns(result.freeRunsRemaining);
-    }
-    return result.text;
+    const d = await res.json();
+    if (d.error) throw new Error(d.error.message);
+    return d.content?.map((b) => b.text || "").join("") || "";
   }
 
   async function generate() {
-    if (!idea.trim() || !variation) return;
+    if (!idea.trim() || !variation || !apiKey) return;
     setLoading(true); setOutput(""); setOutputP2(""); setErr("");
     try {
       const systemPrompt = format === "scannable"
@@ -454,7 +455,7 @@ export default function PRDGenerator({ apiKey }) {
   }
 
   async function generateP2() {
-   if (!output) return;
+    if (!output || !apiKey) return;
     setLoadingP2(true); setErr("");
     try {
       const result = await callAPI(
@@ -473,7 +474,7 @@ export default function PRDGenerator({ apiKey }) {
   }
 
   const fullOutput = outputP2 ? `${output}\n\n---\n\n${outputP2}` : output;
-  const canGenerate = idea.trim() && variation && (apiKey || (freeRuns !== null && freeRuns > 0));
+  const canGenerate = idea.trim() && variation && apiKey;
 
   return (
     <div>
@@ -530,13 +531,9 @@ export default function PRDGenerator({ apiKey }) {
           </div>
         )}
         {!apiKey && (
-          <div className={`alert ${freeRuns > 0 ? "alert-ok" : "alert-warn"}`} style={{ marginBottom: 14 }}>
-            <Icon d={freeRuns > 0 ? Icons.check : Icons.warning} size={14} />
-            {freeRuns === null
-              ? "No API key entered. Checking free run availability..."
-              : freeRuns > 0
-              ? `No API key needed: ${freeRuns} free ${freeRuns === 1 ? "run" : "runs"} remaining today, on the house.`
-              : "Free runs used up for today. Enter your Anthropic API key in the sidebar to continue."}
+          <div className="alert alert-warn" style={{ marginBottom: 14 }}>
+            <Icon d={Icons.warning} size={14} />
+            Enter your Anthropic API key in the sidebar first.
           </div>
         )}
         <button className="btn btn-primary" onClick={generate} disabled={loading || !canGenerate}

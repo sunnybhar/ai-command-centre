@@ -7,21 +7,9 @@ import SentimentSentinel from "./tools/SentimentSentinel";
 import ScoutAgent        from "./tools/ScoutAgent";
 import PriceTracker      from "./tools/PriceTracker";
 import LeadsEngine       from "./tools/LeadsEngine";
-import MetricsDiagnosis  from "./tools/MetricsDiagnosis";
 
 // ── Tool Registry ─────────────────────────────────────────────────────────────
 const TOOLS = [
-  {
-    id: "metrics",
-    num: "TOOL 07",
-    label: "Metrics Diagnosis",
-    emoji: "🩺",
-    icon: Icons.pulse,
-    tag: "HERO",
-    color: "#6366f1",
-    desc: "Structured root-cause analysis for metric movements: diagnostic tree, ranked hypotheses, and a timed interview practice mode.",
-    Component: MetricsDiagnosis,
-  },
   {
     id: "prd",
     num: "TOOL 01",
@@ -95,27 +83,23 @@ function HomePage({ onLaunch }) {
   return (
     <div className="home">
       {/* Header */}
-      <div className="home-eyebrow">AI Product Management Suite · Fordham MBA · Gabelli School of Business</div>
-      <h1 className="home-title">Sunny Bhargava<br />AI Product Managers Dashboard</h1>
+      <div className="home-eyebrow">AI Ops Toolkit · Fordham MBA · Gabelli School of Business</div>
+      <h1 className="home-title">AI Command Centre</h1>
       <p className="home-sub">
-        An AI-powered product management workspace that consolidates the core workflows of a
-        modern PM into a single platform. Eleven integrated tools cover the full product lifecycle:
-        writing structured requirements documents, diagnosing metric movements, running statistical
-        experiment analysis, monitoring brand sentiment, scoring and engaging leads, comparing
-        frontier AI models, and evaluating output quality with a dedicated evaluation harness.
-        Built with React, FastAPI, and the Anthropic Claude API.
+        A personal product management toolkit. Each tool handles one part of the PM workflow —
+        from writing PRDs and running A/B tests to brand monitoring, lead scoring, and cold outreach.
       </p>
 
       {/* Progress */}
       <div className="progress-card">
         <div className="progress-label">Suite Progress</div>
         <div className="progress-bar-wrap">
-          <div className="progress-bar-fill" style={{ width: `${Math.round((TOOLS.length/12)*100)}%` }} />
+          <div className="progress-bar-fill" style={{ width: "100%" }} />
         </div>
-        <div className="progress-meta">{TOOLS.length} / 12 tools built</div>
+        <div className="progress-meta">6 / 6 tools built</div>
         <div>
-          <div className="progress-count">{TOOLS.length}</div>
-          <div className="progress-of">of 12 planned</div>
+          <div className="progress-count">6</div>
+          <div className="progress-of">of 6 live</div>
         </div>
       </div>
 
@@ -163,11 +147,11 @@ export default function App() {
       {/* ── SIDEBAR ── */}
       <aside className="sidebar">
         <div className="logo">
-          <div className="logo-eyebrow">AI Product Management Suite</div>
+          <div className="logo-eyebrow">AI Ops Toolkit</div>
           <div className="logo-title">
             Sunny Bhargava<br />
-            AI Product Managers<br />
-            Dashboard
+            Command Centre<br />
+            for Product Management
           </div>
           <div className="logo-sub">Fordham · Gabelli MBA · 2027</div>
         </div>
@@ -233,7 +217,7 @@ export default function App() {
         {active === "home" && (
           <div className="topbar">
             <div>
-              <div className="topbar-title">AI Product Managers Dashboard</div>
+              <div className="topbar-title">AI Command Centre</div>
               <div className="topbar-desc">Sunny Bhargava · Fordham Gabelli MBA · Class of 2027</div>
             </div>
           </div>
